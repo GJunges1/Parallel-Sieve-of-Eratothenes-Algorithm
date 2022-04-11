@@ -4,13 +4,24 @@
 
 #include <iostream>
 
-#define MAXN 2000000000
+#define MAXN 600000000
 
 using namespace std;
 
+short *eh_primo;
+
+void crivo(long int i){
+    
+    eh_primo[i] = 1;
+
+    for(long int k = i + i; k <= MAXN; k += i){
+        eh_primo[k] = 0;
+    }
+}
+
 int main(){
 
-    short *eh_primo = new short [MAXN+1]; // -1 => indefinido, 0 => composto e 1 => primo.
+    eh_primo = new short [MAXN+1]; // -1 => indefinido, 0 => composto e 1 => primo.
                                         // seus elementos são inicializados com -1
 
     long int j = 0;
@@ -23,29 +34,18 @@ int main(){
         eh_primo[i] = -1;
     }
 
-    cout << "procurando primos de 2 a" << MAXN <<" ...\n";
+    cout << "procurando primos de 2 a " << MAXN <<" ...\n";
 
     // Para cada número de 2 até n
-    {
-	    for (i = 2;  i <= MAXN; i++){
-		    
-            // checo se o número atual é indefinido.
-            if(eh_primo[i] == -1){
-                
-                // Se ele for, indico que ele é primo e o exibo
-                eh_primo[i] = 1;
-            
-                // e que os múltiplos dele são compostos.
-
-                for(int k = i + i; k <= MAXN; k += i){
-                    eh_primo[k] = 0;
-                }
-            }
-	    }
+    for (i = 2;  i <= MAXN; i++){
+        
+        // checo se o número atual é indefinido.
+        if(eh_primo[i] == -1){
+            crivo(i);
+        }
     }
 
     cout << "fim!\n-----------------------\n";
-    cout << "\n último número verificado: " << i << std::endl;
 
     delete [] eh_primo;
 
