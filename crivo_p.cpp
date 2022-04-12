@@ -5,8 +5,8 @@
 #include <iostream>
 
 #define NUM_THREADS 4
-#define MAXN 600000000
-#define CHUNKS 1
+#define MAXN 2000000000
+#define CHUNKS 100
 
 using namespace std;
 
@@ -40,7 +40,7 @@ int main(){
     cout << "procurando primos de 2 a " << MAXN <<" ...\n";
 
     // Para cada número de 2 até n
-    #pragma omp parallel for num_threads(NUM_THREADS) schedule(static, CHUNKS)
+    #pragma omp parallel for num_threads(NUM_THREADS) schedule(dynamic,CHUNKS)
     for (i = 2;  i <= MAXN; i++){
         
         // checo se o número atual é indefinido.

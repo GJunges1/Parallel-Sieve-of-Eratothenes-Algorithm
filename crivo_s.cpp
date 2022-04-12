@@ -4,7 +4,7 @@
 
 #include <iostream>
 
-#define MAXN 600000000
+#define MAXN 2000000000
 
 using namespace std;
 
