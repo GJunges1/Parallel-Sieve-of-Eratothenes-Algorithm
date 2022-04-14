@@ -3,12 +3,16 @@
 // Versão SERIAL
 
 #include <iostream>
+#include <cmath>
 
-#define MAXN 2000000000
+#define MAXN 5000000000
+
+const int lastNumberSqrt = (int)sqrt((double)MAXN);
+long int memorySize = (MAXN - 1) / 2;
 
 using namespace std;
 
-short *eh_primo;
+char *eh_primo;
 
 void crivo(long int i){
     
@@ -21,32 +25,35 @@ void crivo(long int i){
 
 int main(){
 
-    eh_primo = new short [MAXN+1]; // -1 => indefinido, 0 => composto e 1 => primo.
-                                        // seus elementos são inicializados com -1
+    eh_primo = new char [MAXN+1];
+
 
     long int j = 0;
     long int i = 0;
 
     cout << "inicializando o vetor de marcação de primos...\n";
 
-    // Inicializando "eh_primo" com -1, pois não sabemos nada sobre nenhum número, inicialmente.
+    // Inicializando "eh_primo" com 1, considerando todos primos inicialmente.
     for (i = 1; i <= MAXN; i++){
-        eh_primo[i] = -1;
+        eh_primo[i] = 1;
     }
 
-    cout << "procurando primos de 2 a " << MAXN <<" ...\n";
+    // Pesquisar os nao primos ... 
+    for (long int i = 3; i <= lastNumberSqrt; i += 2)
+        if (eh_primo[i / 2])
+            for (long int j = i * i; j <= MAXN; j += 2 * i)
+                eh_primo[j / 2] = 0;
+    long int found = MAXN >= 2 ? 1 : 0; 
 
-    // Para cada número de 2 até n
-    for (i = 2;  i <= MAXN; i++){
-        
-        // checo se o número atual é indefinido.
-        if(eh_primo[i] == -1){
-            crivo(i);
-        }
-    }
 
-    cout << "fim!\n-----------------------\n";
+    cout << "Contando o número de primos encontrados ...\n";
 
+    for (long int i = 1; i <= MAXN; i++)
+        found += eh_primo[i];
+
+    cout << "Prime numbers (" << MAXN << ") .....: " << found << endl;    
+
+ 
     delete [] eh_primo;
 
     return 0;
